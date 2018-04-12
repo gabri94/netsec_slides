@@ -1,0 +1,414 @@
+\documentclass{beamer}
+\usepackage{listings}
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{subfig}
+\usepackage{booktabs}
+\usepackage{graphicx,hyperref,ru,url}
+\usepackage[smaller]{acronym}
+\usepackage[Q=yes]{examplep}
+\usepackage{caption}
+\lstset{language=bash}          % Set your language (you can change the language for each code-block optionally)
+\captionsetup{font=scriptsize,labelfont=scriptsize}
+%\usetheme{Copenhagen}
+% The title of the presentation:
+%  - first a short version which is visible at the bottom of each slide;
+%  - second the full title shown on the title slide;
+\title[ MitM attacks]{Network Security Lab Activity:\\  Man in the Middle (MitM) attacks}
+
+% Optional: a subtitle to be dispalyed on the title slide
+%\subtitle{Show where you're from}
+
+% The author(s) of the presentation:
+%  - again first a short version to be displayed at the bottom;
+%  - next the full list of authors, which may include contact information;
+\author[G. Gemmi, L. Brugnera]{\textbf{Gabriele Gemmi \\ Lorenzo Brugnera}}
+
+% The institute:
+%  - to start the name of the university as displayed on the top of each slide
+%    this can be adjusted such that you can also create a Dutch version
+%  - next the institute information as displayed on the title slide
+\institute[]{
+  University of Trento}
+
+% Add a date and possibly the name of the event to the slides
+%  - again first a short version to be shown at the bottom of each slide
+%  - second the full date and event name for the title slide
+\date[18/04/2018]{
+ Wednesday, 18 April 2018}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+% \begin{frame}
+%   \frametitle{Outline}
+%
+%   \tableofcontents
+% \end{frame}
+
+% Section titles are shown in at the top of the slides with the current section
+% highlighted. Note that the number of sections determines the size of the top
+% bar, and hence the university name and logo. If you do not add any sections
+% they will not be visible.
+\section{Introduction}
+
+\begin{frame}
+  \frametitle{Outline}
+  \begin{itemize}
+    \item How to mount a MitM attack
+    \begin{itemize}
+      \item ARP Spoofing
+      \item DHCP (DHCPv6) poisoning
+      \item Evil Twin
+    \end{itemize}
+    \item Attacks that can be mounted after the MitM
+    \begin{itemize}
+      \item DNS Spoofing
+      \item HTTP Interception
+      \item SSL Stripping
+      \item HSTS Bypass
+    \end{itemize}
+  \end{itemize}
+
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{What is a MitM attack?}
+  \begin{figure}
+  \includegraphics[width=0.5\textwidth]{figures/mitm_diagram}
+  \caption*{Diagram of a MitM attack}
+  \end{figure}
+  \only<1>{
+    \begin{block}{Requisites}
+      \begin{itemize}
+        \item The attacker must be near the victim (in the same local network)
+      \end{itemize}
+    \end{block}
+  }
+  \only<2>{
+  \begin{block}{How to mount this attack}
+    \begin{itemize}
+      \item The attacker must be physically connected between the victim and the rest of the network
+\\      \centering{or}
+      \item The attacker must hijack the traffic from the victim to himself
+    \end{itemize}
+  \end{block}
+  }
+
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Network layer attacks}
+  \begin{block}{}
+    \begin{itemize}
+      \item ARP poisoning
+      \item DHCP (DHCPv6) poisoning
+      \item Evil Twin
+    \end{itemize}
+  \end{block}
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{ARP Poisoning}
+  \begin{block}{How it works}
+  \begin{itemize}
+    \item
+    \item
+  \end{itemize}
+\end{block}
+  \begin{figure}
+    \includegraphics[height=115px]{figures/arp_spoofing}
+    \caption*{ARP Spoofing attack diagram}
+  \end{figure}
+\end{frame}
+
+\begin{frame}
+  \frametitle{ARP Poisoning}
+  \begin{block}{How to prevent it?}
+  \pause
+  \begin{itemize}
+    \item
+    \item
+  \end{itemize}
+\end{block}
+\end{frame}
+\begin{frame}
+  \frametitle{DHCP (DHCPv6) poisoning}
+  \begin{block}{How it works}
+  \begin{itemize}
+    \item The attacker sets-up a rogue DHCP server
+    \item Each time a victim sends a DHCP request the rogue server answers with a forged response
+    \item The response contains a malicious default gateway to perform the MitM attack
+  \end{itemize}
+\end{block}
+  \begin{figure}
+  \includegraphics[height=95px]{figures/dhcp_poisong}
+  \caption*{DHCP poisoning attack diagram}
+  \end{figure}
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{DHCP (DHCPv6) poisoning}
+  \begin{block}{How to prevent it?}
+  \pause
+  \begin{itemize}
+    \item A smart switch can be configured to allow DHCP response only on certain trusted ports
+  \end{itemize}
+\end{block}
+  \begin{figure}
+  \includegraphics[height=95px]{figures/dhcp_snooping}
+  \caption*{DHCP snooping diagram}
+  \end{figure}
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Evil Twin}
+  \begin{block}{How it works}
+  \begin{itemize}
+    \item The attacker sets-up a rogue Wi-Fi Access Point with the same ESSID as the target network.
+    \item The victim must receive the rogue AP with a stronger signal than the legit one.
+  \end{itemize}
+\end{block}
+  \begin{figure}
+    \includegraphics[height=115px]{figures/evil-twin}
+    \caption*{Evil Twin attack diagram}
+  \end{figure}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Evil Twin}
+  \begin{block}{How to prevent it?}
+  \pause
+  \begin{itemize}
+    \item A simple authentication (WPA) doesn't ensure the client that the AP is legit. (The attacker just need to discover the key)
+    \item The client must authenticate the AP (802.1x) and verify its legitimacy
+  \end{itemize}
+\end{block}
+\end{frame}
+
+\section{Laboratory preparation}
+\begin{frame}
+\frametitle{Network Topology}
+\begin{figure}
+  \includegraphics[height=190px]{figures/net_topo}
+  \caption*{Topology of the VMs network}
+\end{figure}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Tools}
+This is a list of tools we will be using in this lab, in the next slides the usage and the purpose will be explained
+\vfill
+\begin{block}{}
+  \begin{itemize}
+    \item arpspoof
+    \item wireshark
+    \item dnsspoof
+    \item sslstrip
+    \item sslstrip2
+    \item dns2proxy
+  \end{itemize}
+\end{block}
+
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Tips and Tricks}
+
+\begin{block}{Useful infos}
+  \begin{itemize}
+    \item Type \texttt{sudo} before every command, the password  is ``netsec''
+  \end{itemize}
+\end{block}
+\begin{block}{To do after every exercise}
+\begin{itemize}
+  \item Flush the DNS cache: \texttt{systemd-resolve --flush-cache}
+  \item Clean the iptables chains \texttt{iptables -t <chain name> -F}
+  \item Clean the browser cache ``CTRL+SHIFT+CANC``
+\end{itemize}
+\end{block}
+
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+\frametitle{MitM Network attack}
+\begin{block}{}
+  \begin{itemize}
+    \item To mount the following attacks you can use any of the attacks we illustrated you
+    \item Since you already know how to mount it and due to its simplicity, we wll be using ARP spoofing
+  \end{itemize}
+\end{block}
+
+\begin{block}{}
+  \begin{itemize}
+    \item You can use either ettercap or this simple command line tool
+    \texttt{arpspoof -t <victim ip> -r <router ip>}
+  \end{itemize}
+\end{block}
+\end{frame}
+
+
+\section{Attacks}
+\begin{frame}{HTTP Interception}
+  \begin{block}{How it works}
+    \begin{itemize}
+      \item Using wireshark it's possible to capture all the traffic that flows between the victim and the router
+      \item Sensitive information can be sniffed by the attacker
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}{HTTP Interception}
+  \begin{block}{Exercise}
+    \begin{itemize}
+      \item Mount an MitM network attack
+      \item Open a browser and navigate to ``http://gugol.it''
+      \item Sniff the HTTP traffic exchanged between the victim and the server
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}{HTTP Interception}
+  \begin{block}{How to prevent?}
+  \pause
+  \begin{itemize}
+    \item An encrypted channel can preserve the confidentiality
+    \begin{itemize}
+      \item SSL/TLS
+      \item VPN
+    \end{itemize}
+  \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}{DNS Spoofing}
+  \begin{block}{How it works}
+    \begin{itemize}
+      \item DNS messages are exchanged in clear using the UDP protocol on port 53
+      \item An attacker who is \textit{in the middle} can manipulate the DNS responses
+    \end{itemize}
+  \end{block}
+  \begin{figure}
+    \includegraphics[height=100px]{figures/dns-spoof-bad}
+    \caption*{Diagram of the attack}
+  \end{figure}
+\end{frame}
+\begin{frame}{DNS Spoofing}
+  \begin{block}{In practice}
+    \begin{itemize}
+      \item \texttt{dnsspoof} forges replies to arbitrary DNS queries on the LAN
+    \end{itemize}
+  \end{block}
+  \begin{block}{Usage}
+    \texttt{dnsspoof [-i interface] [-f hostsfile]}
+    \begin{block}{}
+      The hostfile contains the record associated with the A response\\
+      for example:\\
+      \texttt{www.google.it  ~~~~192.168.1.1}\\
+      \texttt{www.facebook.com   ~192.168.1.1}
+    \end{block}
+  \end{block}
+\end{frame}
+\begin{frame}{DNS Spoofing}
+  \begin{block}{Exercise}
+    \begin{itemize}
+      \item There's a malicious webserver running on the attcker VM
+      \item Create a proper hostsfile to spoof requests for \texttt{www.gugol.it} pointing to the malicious webserver
+      \item Mount a MitM attack
+      \item Setup \texttt{dnsspoof} to answer to the DNS query of the victim
+      \item Navigate to \texttt{www.gugol.it} to verify that the attacks has succeeded
+      \pause
+      \item Block the DNS response from the legit server using \texttt{iptables}
+    \end{itemize}
+  \end{block}
+  \pause
+  \texttt{iptables -A FORWARD -s <victim ip> -p udp --dport <dns port> -j DROP}
+\end{frame}
+
+\begin{frame}{DNS Spoofing}
+  \begin{block}{How to prevent?}
+  \pause
+  \begin{itemize}
+    \item Cached responses cannot be spoofed
+    \item DNSSec guarantees integrity of the records by using digital signature
+  \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}{SSL Stripping}
+  \begin{block}{How it works}
+    \begin{itemize}
+      \item An attacker \textit{in the middle} manipulates the HTTP responses
+      \item Every \texttt{https://} url in the response gets downgraded to \texttt{http://}
+    \end{itemize}
+  \end{block}
+  \begin{figure}
+    \includegraphics[height=120px]{figures/ssl_strip}
+    \caption*{SSL Stripping attack diagram}
+  \end{figure}
+\end{frame}
+
+\begin{frame}{SSL Stripping}
+  \begin{block}{In practice}
+    \begin{itemize}
+      \item \texttt{sslstrip} is an HTTP proxy that manipulates the messages to perform the attack
+      \item The http traffic flowing through the attacker must be redirected to sslstrip
+    \end{itemize}
+  \end{block}
+  \begin{block}{Usage}
+  \texttt{sslstrip -l <port>}
+  \end{block}
+\end{frame}
+\begin{frame}{SSL Stripping}
+  \begin{block}{Exercise}
+    \begin{itemize}
+      \item There's a malicious webserver running on the attcker VM.
+      \item Mount a MitM attack
+      \item Setup \texttt{sslstrip} to manipulate the HTTP traffic
+      \item Using \texttt{iptables} redirect the traffic from the port 80 to the port that sslstrip is using
+      \item Navigate to \texttt{www.gugol.it} and click to the link.
+      \item Verify that the connection with the website is unsecure
+    \end{itemize}
+  \end{block}
+  \pause
+  \texttt{iptables -t nat -A PREROUTING -p tcp --destination-port <web server port> -J REDIRECT --to-port <sslstrip port>}
+
+\end{frame}
+\begin{frame}{SSL Stripping}
+  \begin{block}{How to prevent?}
+  \end{block}
+\end{frame}
+
+
+\begin{frame}{HSTS Bypass}
+  \begin{block}{How it works}
+  \end{block}
+\end{frame}
+\begin{frame}{HSTS Bypass}
+  \begin{block}{In practice}
+  \end{block}
+\end{frame}
+\begin{frame}{HSTS Bypass}
+
+  \begin{block}{Exercise}
+  \end{block}
+\end{frame}
+\begin{frame}{HSTS Bypass}
+
+  \begin{block}{How to prevent?}
+  \end{block}
+\end{frame}
+
+\end{document}

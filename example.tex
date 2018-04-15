@@ -118,7 +118,7 @@
   \frametitle{ARP Poisoning}
   \begin{block}{How it works}
   \begin{itemize}
-    \item The attacker floods the network with poisoned ARP messages 
+    \item The attacker floods the network with poisoned ARP messages
     \item The mapping between IPs and MACs is altered in order to hijack the communication through the attacker
   \end{itemize}
 \end{block}
@@ -241,7 +241,7 @@ This is a list of tools we will be using in this lab, in the next slides the usa
 
 
 
-\begin{frame}[fragile]
+\begin{frame}
 \frametitle{MitM Network attack}
 \begin{block}{}
   \begin{itemize}
@@ -258,6 +258,16 @@ This is a list of tools we will be using in this lab, in the next slides the usa
 \end{block}
 \end{frame}
 
+
+\begin{frame}{How to start the laboratory}
+  \begin{block}{}
+    \begin{itemize}
+      \item Open virtualbox
+      \item Run "netsec\_router" and "netsec\_server" in headless mode
+      \item Run "netsec\_victim" and "netsec\_malicious" normally
+    \end{itemize}
+  \end{block}
+\end{frame}
 
 \section{Attacks}
 \begin{frame}{HTTP Interception}
@@ -386,7 +396,7 @@ This is a list of tools we will be using in this lab, in the next slides the usa
 \only<1>{
   \begin{block}{How it works}
   \begin{itemize}
-      \item The HSTS policy is associated with a specific domain name 
+      \item The HSTS policy is associated with a specific domain name
       \item Changing just by one letter the domain name, the browser will not apply the policy anymore
       \item For example an 'l' (uncapital L) could become an 'I' (capital i)
     \end{itemize}
@@ -402,7 +412,7 @@ This is a list of tools we will be using in this lab, in the next slides the usa
 \begin{frame}{HSTS Bypass}
   \begin{block}{In practice}
   \begin{itemize}
-      \item \texttt{sslstrip} can be modified to change the domain name inside the url all the times it strips an HTTPS url 
+      \item \texttt{sslstrip} can be modified to change the domain name inside the url all the times it strips an HTTPS url
       \item The DNS queries must also be manipulated using \texttt{dns2proxy}
     \end{itemize}
   \end{block}
@@ -436,13 +446,13 @@ This is a list of tools we will be using in this lab, in the next slides the usa
     \includegraphics[width=\textwidth]{figures/request_handler}
     \caption*{}
   \end{figure}
-} 
+}
 \only<2>{
   \begin{figure}
     \includegraphics[width=\textwidth]{figures/a_query}
     \caption*{}
   \end{figure}
-} 
+}
 \end{frame}
 \begin{frame}{HSTS Bypass - sslstrip2 code}
 \only<1>{
@@ -452,13 +462,13 @@ This is a list of tools we will be using in this lab, in the next slides the usa
   \begin{figure}
     \includegraphics[width=\textwidth]{figures/replace_secure_link}
   \end{figure}
-} 
+}
 \only<2>{
   \begin{figure}
     \includegraphics[width=\textwidth]{figures/add_secure_link}
     \caption*{}
   \end{figure}
-} 
+}
 \end{frame}
 \begin{frame}{HSTS Bypass}
 
@@ -522,6 +532,9 @@ This is a list of tools we will be using in this lab, in the next slides the usa
     \item DNSSec guarantees integrity of the records by using digital signature
   \end{itemize}
   \end{block}
+\end{frame}
+
+\begin{frame}{Thank you}
 \end{frame}
 
 

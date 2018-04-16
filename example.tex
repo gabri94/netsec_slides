@@ -370,7 +370,7 @@ This is a list of tools we will be using in this lab, in the next slides the usa
     \end{itemize}
   \end{block}
   \pause
-  \texttt{iptables -t nat -A PREROUTING -p tcp --destination-port <web server port> -J REDIRECT --to-port <sslstrip port>}
+  \texttt{iptables -t nat -A PREROUTING -p tcp --destination-port <web server port> -j REDIRECT --to-port <sslstrip port>}
 
 \end{frame}
 \begin{frame}{SSL Stripping}
@@ -383,12 +383,12 @@ This is a list of tools we will be using in this lab, in the next slides the usa
     \end{itemize}
   \end{block}
   \pause
-  \begin{block}{Try it yourself}
-  \begin{itemize}
-      \item Navigate directly to \texttt{https://www.gugol.it}
-      \item Try to mount the attack again
-    \end{itemize}
-  \end{block}
+  % \begin{block}{Try it yourself}
+  % \begin{itemize}
+  %     \item Navigate directly to \texttt{https://www.gugol.it}
+  %     \item Try to mount the attack again
+  %   \end{itemize}
+  % \end{block}
 \end{frame}
 
 
@@ -438,21 +438,7 @@ This is a list of tools we will be using in this lab, in the next slides the usa
   \end{itemize}
   \end{block}
   \pause
-  \texttt{iptables -t nat -A PREROUTING -p udp --destination-port 53 -i enp0s8 -J DNAT --to <attacker ip>}
-\end{frame}
-\begin{frame}{HSTS Bypass - dns2proxy code}
-\only<1>{
-  \begin{figure}
-    \includegraphics[width=\textwidth]{figures/request_handler}
-    \caption*{}
-  \end{figure}
-}
-\only<2>{
-  \begin{figure}
-    \includegraphics[width=\textwidth]{figures/a_query}
-    \caption*{}
-  \end{figure}
-}
+  \texttt{iptables -t nat -A PREROUTING -p udp --destination-port 53 -i enp0s8 -j DNAT --to <attacker ip>}
 \end{frame}
 \begin{frame}{HSTS Bypass - sslstrip2 code}
 \only<1>{
@@ -470,6 +456,22 @@ This is a list of tools we will be using in this lab, in the next slides the usa
   \end{figure}
 }
 \end{frame}
+
+\begin{frame}{HSTS Bypass - dns2proxy code}
+\only<1>{
+  \begin{figure}
+    \includegraphics[width=\textwidth]{figures/request_handler}
+    \caption*{}
+  \end{figure}
+}
+\only<2>{
+  \begin{figure}
+    \includegraphics[width=\textwidth]{figures/a_query}
+    \caption*{}
+  \end{figure}
+}
+\end{frame}
+
 \begin{frame}{HSTS Bypass}
 
   \begin{block}{How to prevent?}

@@ -7,6 +7,7 @@
 \usepackage{graphicx,hyperref,ru,url}
 \usepackage[smaller]{acronym}
 \usepackage[Q=yes]{examplep}
+\usepackage{pgfpages}
 \usepackage{caption}
 \lstset{language=bash}          % Set your language (you can change the language for each code-block optionally)
 \captionsetup{font=scriptsize,labelfont=scriptsize}
@@ -79,7 +80,7 @@
 \begin{frame}
   \frametitle{What is a MitM attack?}
   \begin{figure}
-  \includegraphics[width=0.5\textwidth]{figures/mitm_diagram}
+  \includegraphics[width=0.5\textwidth]{../figures/mitm_diagram}
   \caption*{Diagram of a MitM attack}
   \end{figure}
   \only<1>{
@@ -123,7 +124,7 @@
   \end{itemize}
 \end{block}
   \begin{figure}
-    \includegraphics[height=115px]{figures/arp_spoofing}
+    \includegraphics[height=115px]{../figures/arp_spoofing}
     \caption*{ARP Spoofing attack diagram}
   \end{figure}
 \end{frame}
@@ -134,6 +135,7 @@
   \pause
   \begin{itemize}
     \item ARP poisoning proof switches
+    \item Port-Based Network Access Control (802.1x)
     \item VPN
   \end{itemize}
 \end{block}
@@ -148,7 +150,7 @@
   \end{itemize}
 \end{block}
   \begin{figure}
-  \includegraphics[height=95px]{figures/dhcp_poisong}
+  \includegraphics[height=95px]{../figures/dhcp_poisong}
   \caption*{DHCP poisoning attack diagram}
   \end{figure}
 \end{frame}
@@ -163,7 +165,7 @@
   \end{itemize}
 \end{block}
   \begin{figure}
-  \includegraphics[height=95px]{figures/dhcp_snooping}
+  \includegraphics[height=95px]{../figures/dhcp_snooping}
   \caption*{DHCP snooping diagram}
   \end{figure}
 \end{frame}
@@ -178,7 +180,7 @@
   \end{itemize}
 \end{block}
   \begin{figure}
-    \includegraphics[height=110px]{figures/evil-twin}
+    \includegraphics[height=110px]{../figures/evil-twin}
     \caption*{Evil Twin attack diagram}
   \end{figure}
 \end{frame}
@@ -198,7 +200,7 @@
 \begin{frame}
 \frametitle{Network Topology}
 \begin{figure}
-  \includegraphics[height=190px]{figures/net_topo}
+  \includegraphics[height=190px]{../figures/net_topo}
   \caption*{Topology of the VMs network}
 \end{figure}
 \end{frame}
@@ -311,13 +313,13 @@ This is a list of tools we will be using in this lab, in the next slides the usa
   \end{block}
   \only<1>{
     \begin{figure}
-      \includegraphics[height=120px]{figures/sslstrip}
+      \includegraphics[height=120px]{../figures/sslstrip}
       \caption*{SSL Stripping attack diagram}
     \end{figure}
   }
   \only<2>{
   \begin{figure}
-    \includegraphics[height=120px]{figures/sslstrip_time}
+    \includegraphics[height=120px]{../figures/sslstrip_time}
     \caption*{SSL Stripping attack diagram}
   \end{figure}
   }
@@ -330,7 +332,7 @@ This is a list of tools we will be using in this lab, in the next slides the usa
     \end{itemize}
   \end{block}
   \begin{figure}
-    \includegraphics[width=\textwidth]{figures/sslstrip_https}
+    \includegraphics[width=\textwidth]{../figures/sslstrip_https}
     \caption*{}
   \end{figure}
 \end{frame}
@@ -342,7 +344,7 @@ This is a list of tools we will be using in this lab, in the next slides the usa
     \end{itemize}
   \end{block}
   \begin{figure}
-    \includegraphics[width=\textwidth]{figures/sslstrip_http}
+    \includegraphics[width=\textwidth]{../figures/sslstrip_http}
     \caption*{}
   \end{figure}
 \end{frame}
@@ -382,7 +384,7 @@ This is a list of tools we will be using in this lab, in the next slides the usa
       \item The HSTS policy is communicated by the server via an HTTPS response header field named \textit{Strict-Transport-Security}
     \end{itemize}
   \end{block}
-  \pause
+  %\pause
   % \begin{block}{Try it yourself}
   % \begin{itemize}
   %     \item Navigate directly to \texttt{https://www.gugol.it}
@@ -404,7 +406,7 @@ This is a list of tools we will be using in this lab, in the next slides the usa
   }
   \only<2>{
   \begin{figure}
-    \includegraphics[width=.9\textwidth]{figures/hsts_bypass_time}
+    \includegraphics[width=.9\textwidth]{../figures/hsts_bypass_time}
     \caption*{}
   \end{figure}
   }
@@ -443,15 +445,15 @@ This is a list of tools we will be using in this lab, in the next slides the usa
 \begin{frame}{HSTS Bypass - sslstrip2 code}
 \only<1>{
   \begin{figure}
-    \includegraphics[width=\textwidth]{figures/regexp}
+    \includegraphics[width=\textwidth]{../figures/regexp}
   \end{figure}
   \begin{figure}
-    \includegraphics[width=\textwidth]{figures/replace_secure_link}
+    \includegraphics[width=\textwidth]{../figures/replace_secure_link}
   \end{figure}
 }
 \only<2>{
   \begin{figure}
-    \includegraphics[width=\textwidth]{figures/add_secure_link}
+    \includegraphics[width=\textwidth]{../figures/add_secure_link}
     \caption*{}
   \end{figure}
 }
@@ -460,13 +462,13 @@ This is a list of tools we will be using in this lab, in the next slides the usa
 \begin{frame}{HSTS Bypass - dns2proxy code}
 \only<1>{
   \begin{figure}
-    \includegraphics[width=\textwidth]{figures/request_handler}
+    \includegraphics[width=\textwidth]{../figures/request_handler}
     \caption*{}
   \end{figure}
 }
 \only<2>{
   \begin{figure}
-    \includegraphics[width=\textwidth]{figures/a_query}
+    \includegraphics[width=\textwidth]{../figures/a_query}
     \caption*{}
   \end{figure}
 }
@@ -490,7 +492,7 @@ This is a list of tools we will be using in this lab, in the next slides the usa
     \end{itemize}
   \end{block}
   \begin{figure}
-    \includegraphics[height=100px]{figures/dns-spoof-bad}
+    \includegraphics[height=100px]{../figures/dns-spoof-bad}
     \caption*{Diagram of the attack}
   \end{figure}
 \end{frame}

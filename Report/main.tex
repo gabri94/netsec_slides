@@ -1,4 +1,4 @@
-\documentclass[draft]{article}
+\documentclass[final]{article}
 \usepackage{fixme}
 \usepackage{graphicx}
 \usepackage[utf8x]{inputenc}
@@ -35,7 +35,7 @@ double/.style={short,text width=2cm}
 \section{Introduction}
 \acrodef{MitM}{Man in the Middle}
 \paragraph{What are \ac{MitM} attacks}
-A man in the Middle attack is an attack where the attacker secretly relays
+In a \ac{MitM} attack a malicious user secretly relays
 and possibly alters the communication between two parties who believe they
 are directly communicating with each other. The aim of the attacker is to
 take the control of the communication and to intercept all relevant messages
@@ -50,18 +50,18 @@ A \ac{MitM} attack can be performed on secure connections as well,
 with the only difference that the attacker has to establish
 two independent SSL sessions, one for each TCP connection.
 Generally, browsers handle this kind of things,
-notifying the user that the certificate is not valid. \\
-A \ac{MitM} is well represented by the following image:
-
-\begin{figure}[h]
+notifying the user that the certificate is not valid.
+A \ac{MitM} is well represented by the figure \ref{mitm}.
+There are several ways to mount a \ac{MitM},
+but one important requisite is that the attacker must be ``close''
+to the victims.
+\begin{figure}
 \center
 \includegraphics[width=.8\textwidth]{../figures/mitm_diagram}
 \caption{Diagram of a \ac{MitM} attack}
+\label{mitm}
 \end{figure}
 
-\noindent There are several ways to mount a \ac{MitM},
-but one important requisite is that the attacker must be ``close''
-to the victims, more precisely in the same local network.
 
 \subsection{Network attacks}
 
@@ -73,178 +73,222 @@ to the victims, more precisely in the same local network.
 
 \subsection{Service attacks}
 \subsubsection{ARP Poisoning}
-\fxnote{Too many repetition of ARP}
 \acrodef{ARP}{Address Resolution Protocol}
 The \ac{ARP} is a communication protocol used to discover link layer addresses,
-such as a MAC addresses, associated with a given network layer address, which is typically IPv4.
+such as MAC addresses, associated with a given network layer address, which is typically IPv4.
 This mapping between MAC and IP addresses is a critical function in the Internet protocol suite. \\
 \ac{ARP} poisoning is a technique by which an attacker sends spoofed \ac{ARP} messages
 onto a local area network with the purpose to alter the mapping between IP and MAC addresses.
-\ac{ARP} spoofing may allow an attacker to intercept data frames on a network, modify the traffic,
-or stop all traffic.Often the attack is used as an opening for other attacks,
-such as denial of service, man in the middle, or session hijacking attacks.
-The basic principle behind \ac{ARP} poisoning is the exploitation of the the
+It may allow an attacker to intercept data frames on a network, sniffing sensitive information or altering the traffic.
+Often the attack is used as an opening for other attacks,
+such as denial of service, man in the middle, or session hijacking.
+The basic principle behind it is the exploitation of the the
 \ac{ARP} protocol by sending spoofed messages onto the LAN.
-\ac{ARP} poisoning attacks can be run from a compromised host on the LAN,
+This attack can be run from a compromised host on the LAN,
 or from an attacker's machine that is connected directly to the target LAN.\\
-Generally, the goal of the attack is to associate the attacker's host MAC address
-with the IP address of a target host, so that any traffic meant for the target host
-will be sent to the attacker's one. The attacker may choose to manipulate the data before
-forwarding them or simply  forwarding the packets to the destination in order to sniff private informations.
-The following diagram shows the behaviour of the attack:
-\begin{figure}[h]
+Generally, the goal of the attack is to associate the attacker's MAC address
+with the IP address of a victim, so that any traffic meant for the victim
+will be sent to the attacker.
+The diagram visible in figure \ref{arp_spoofing} shows the behaviour of the attack.
+\begin{figure}
   \center
-  \includegraphics[width=.79\textwidth]{../figures/arp_spoofing}
+  \includegraphics[width=.8\textwidth]{../figures/arp_spoofing}
   \caption{ARP Spoofing attack diagram}
+  \label{arp_spoofing}
 \end{figure}
+
 \paragraph{Countermeasures}
 Several countermeasures can be adopted to prevent an \ac{ARP} poisoning attack:
-\fxnote{We should either do a list of "things" without providing further information or organize it and provide these information for all of them}
 \begin{itemize}
-  \item \ac{ARP} poisoning proof switches
-  \item Port-Based Network Access Control (802.1x), based on the control of the access ports to the LAN. The protocol provides a mechanism to authenticate devices which want to establish a connection to LAN or WLAN network through a switch or a Wi-Fi access point
-  \item VPN, based on encryption. A VPN uses not only an encrypted tunnel, but data are encrypted as well
+  \item \textbf{\ac{ARP} poisoning proof switches}. These smart switches maintains an \ac{ARP} table and blocks illegitimate ARP responses.
+  \item \textbf{Port-Based Network Access Control (802.1x)}. This protocol provides a mechanism to authenticate devices which want to establish a connection to LAN or WLAN network through a switch or a Wi-Fi access point.
+  \item \textbf{Encrypted VPN}. These VPNs authenticate both client and server with a public key mechanism and so the attacker cannot intercept nor alter the communication.
 \end{itemize}
 
 \subsubsection{DHCP Poisoning}
-\fxnote{Should we write a brief introduction on what is each of these things? ARP, DHCP, SSL, HSTS?}
+\fxnote{Should we write a brief introduction on what is each of these things? SSL, HSTS?}
 \acrodef{DHCP}{Dynamic Host Configuration Protocol}
+\ac{DHCP} is a network management protocol used in networks to dynamically assign IP address to each device.
+In this way, the user does not need to configure manually its device, that works in a plug and play fashion.\\
 \ac{DHCP} poisoning is a technique which consists in setting up a rogue \ac{DHCP}  server controlled by the attacker.
-Each time a client sends a requests to the legit server, the rogue's response is supposed to arrive earlier than the legit one.
+Each time a client sends a \ac{DHCP} request, the rogue's response is supposed to arrive earlier than the real one.
 When the legit response arrives, it is simply discarded.
-The rogue server can spoof the gateway and all the traffic going away from the local subnet will start to flow into the attacker machine.
-Then, the attacker forwards the received traffic accordingly, so the host will not notice any disruption in connectivity.
-The following diagram explains how the attack works:
-\begin{figure}[h]
+The rogue server can advertise a fake gateway to the clients, in this way all the traffic going away from the local subnet will start to flow into the attacker machine.
+Then, the attacker forwards the received traffic accordingly, so the clients will not notice any disruption in connectivity.
+The diagram in figure \ref{dhcp_poisoning} explains how the attack works.
+\begin{figure}
 \center
-\includegraphics[width=.8\textwidth]{../figures/dhcp_poisong}
+\includegraphics[width=\textwidth]{../figures/dhcp_poisong}
 \caption{DHCP poisoning attack diagram}
+\label{dhcp_poisoning}
 \end{figure}
 \paragraph{Countermeasures}
-\fxnote{We should use the same format as before}
-Smart switches are one of the best solutions to avoid this kind of attack. They are based on a mechanism which sets a port as trusted or untrusted. As you can see by the following diagram, the router expects to receive DHCP responses only from the real DHCP server, so all the responses which does not come from the legit server are discarded. The following diagram better clarifies the explained behaviour:
+Smart switches are one of the best solutions to avoid this kind of attack.
+They are based on a mechanism which sets a port as trusted or untrusted.
+As you can see by the following diagram, the router expects to receive DHCP responses only from the real DHCP server,
+so all the responses which does not come from the legit server are discarded.
+The diagram in figure \ref{dhcp_snooping} better clarifies the explained behaviour.
 
-\begin{figure}[h]
+\begin{figure}
 \center
-\includegraphics[width=.8\textwidth]{../figures/dhcp_snooping}
+\includegraphics[width=\textwidth]{../figures/dhcp_snooping}
 \caption{DHCP snooping diagram}
+\label{dhcp_snooping}
 \end{figure}
-
+\newpage
 \subsubsection{Evil Twin}
-An evil twin is a fraudulent Wi-Fi access point (AP) that appears to be legitimate, set up to eavesdrop on wireless communications.
 \acrodef{SSID}{Service Set IDentifier}
-The rogue access point must have the same \ac{SSID} of the real one and the victim must receive the rogue AP with a stronger signal than the legitimate one.
-\fxnote{Explain why two AP could share the same SSID, concept of ESS}
-
+The 802.11\footnote{\url{https://tools.ietf.org/html/rfc7494}} protocol allows
+the creation of wireless network with multiple Access Points (Extended Service Set).
+This functionality is used in large environments where more than a single AP is needed.
+In order to allow devices to perform handover, multiple APs, sharing the same \ac{SSID}, are set up. \\
+An Evil Twin is a rouge AP added to an existing ESS to eavesdrop the communication.\\
+The attacker sets up the rouge AP close to the victim that will receive it with a stronger signal than the legitimate one.
+The diagram in figure \ref{evil_twin} explains the attack.
 \begin{figure}[h]
   \center
-  \includegraphics[width=.8\textwidth]{../figures/evil-twin}
+  \includegraphics[width=\textwidth]{../figures/evil-twin}
   \caption{Evil Twin attack diagram}
+  \label{evil_twin}
 \end{figure}
-\paragraph{Countermeasures}\fxnote{same as before}
-Usually, a simple authentication (WPA) does not ensure the client that the access point is legitimate, because the attacker just need to discover the key.
-The client must authenticate the AP using 802.1x and verify its legitimacy.
-
+\paragraph{Countermeasure}
+Usually, a simple authentication (WPA) does not ensure the client that the AP is the legitimate one, because the attacker just need to discover the key.
+Therefore, to prevent this attack, the client must verify the legitimacy of the AP. The 802.1x protocol implements this policy using Public Key Infrastructure (PKI).
+\newpage
 \section{Laboratory activity overview}
-The following diagram shows up the network topology we set up in order to mount all the attacks we wanted to explain. It is quite simple and composed by:
+The following diagram shows the network topology we set up in order to mount all the attacks we wanted to explain. It is quite simple and composed by:
 \begin{itemize}
-  \item Victim (Client)
-  \item Server
-  \item Attacker
-  \item Router
+  \item \textbf{Victim (Client)}. A Xubuntu machine where alumns simulate the behaviour of a victim visiting web pages on a browser.
+  \item \textbf{Server}. A Linux machine running Apache HTTP Server that represents \textit{Internet}.
+  \item \textbf{Attacker}. A Xubuntu machine used by alumns to mount the attacks.
+  \item \textbf{Router}. An OpenWRT router used to interconnect the previous machines. It is also used as a DNS server.
 \end{itemize}
-
-\fxnote{PARLARE DELLA CONFIGURAZIONE DI OPENWRT, DIRE ANCHE CHE TIPO DI MACCHINE VIRTUALI CI SONO INSTALLATE}
-
 \begin{figure}[h]
   \center
-  \includegraphics[width=.8\textwidth]{../figures/net_topo}
+  \includegraphics[width=1\textwidth]{../figures/net_topo}
   \caption{Topology of the VMs network}
 \end{figure}
+\newpage
 \section{Exercises}
-
 \subsection{Exercise 1 - HTTP Interception}
-This first exercise is a very simple one, just to take confidence with the machines.
-Basically, in this part you have to capture all the traffic that flows between the victim and the router.
-If the traffic is not encrypted, sensitive information can be sniffed by the attacker,
-due to the fact that they are exchanged in clear. \\
-So, first of all you have to mount a \ac{MitM} network attack:
-you can use either any of the attacks we have just illustrated to you or the ettercap\footnote{\url{http://www.ettercap-project.org/ettercap/}} tool.
-Because this is a laboratory focusing on \ac{MitM} attacks, for simplicity we will use this simple command line tool available in the dsniff package\footnote{\url{https://www.monkey.org/~dugsong/dsniff/}}:
+This preparatory exercise is used to let alumns build confidence with the machines.
+Basically, in this part alumns have to capture all the traffic that flows between the victim and the router.
+Since the traffic is not encrypted, sensitive information are sniffed by the attacker. \\
+First of all alumns have to mount a \ac{MitM} network attack.
+Theoretically any of the attacks explained before could be used.
+For simplicity we chose to mount an ARP Spoofing attack using this simple command line tool available in the dsniff package\footnote{\url{https://www.monkey.org/~dugsong/dsniff/}}:
 \begin{lstlisting}
 arpspoof -t <victim_ip>  -r <router_ip>
 \end{lstlisting}
-After this, from the client virtual machine you have to navigate to a non-secure webpage (\texttt{http://www.homepage.it})
+After this, from the client virtual machine users have to navigate to a non-secure webpage (\url{http://www.homepage.it})
 and, then, using Wireshark\footnote{\url{https://www.wireshark.org/}} sniff the HTTP traffic exchanged between the victim and the server.
-\paragraph{Countermeasures}
-To prevent this kind of attack, an encrypted channel can preserve the confidentiality of the data:
-\begin{itemize}
-  \item SSL/TLS, which is a cryptographic protocol aimed at preserving privacy and data integrity over a computer network between two communicating computer applications
-  \item VPN, based on encryption. A VPN uses not only an encrypted tunnel, but data are encrypted as well \fxnote{(l'abbiamo già detto sopra)}
-\end{itemize}
+\subsubsection{Countermeasure}
+SSL/TLS is a cryptographic protocol aimed at preserving privacy and data integrity over a computer network between two communicating computer applications.
+HTTPS is the secure extension of HTTP implementing SSL/TLS.
 \newpage
 \subsection{Exercise 2 - SSL Stripping}
 \fxnote{check the form}
 Roughly speaking, SSL Strip is a technique by which every occurrence of \texttt{https://} webpage gets replaced in \texttt{http://}.
 In this type of attack, all the traffic from the victim’s machine is routed into the attacker's one via a transparent proxy
-(sslstrip\footnote{\url{https://moxie.org/software/sslstrip/}}) that is created by the attacker himself.
-The interesting thing is that the victim will not get any notification by the browser regarding SSL certificate errors
-and, in the end, he will not have any clue that attack is happening.
-Naturally, all this stuff works in a non-secure communication (HTTP).
-In the following image you can see that the client is supposed to directly communicate with the server,
-instead all the traffic is redirected into the attacker's machine and, then, to the server:
-\fxnote{we should remove the h parameter in the figure and let latex sor the images, then we should refer to the images using ref}
+(sslstrip\footnote{\url{https://moxie.org/software/sslstrip/}}) that is created by the attacker himself.\\
+The interesting thing is that the victim will not get any notification by the browser regarding SSL certificate errors.
+The figure \ref{sslstrip} shows that the client is supposed to directly communicate with the server,
+whereas all the traffic is forwarded to the attacker's machine and, then, to the server.
+The diagram displayed in figure \ref{sslstrip_time} better explains all the temporal sequence of the attack.\\
 \begin{figure}[h]
   \center
-  \includegraphics[width=.8\textwidth]{../figures/sslstrip}
+  \includegraphics[width=\textwidth]{../figures/sslstrip}
   \caption{SSL Stripping attack diagram}
   \label{sslstrip}
 \end{figure}
 \begin{figure}[h]
   \center
-  \includegraphics[width=.8\textwidth]{../figures/sslstrip_time}
+  \includegraphics[width=\textwidth]{../figures/sslstrip_time}
   \caption{SSL Stripping attack diagram}
+  \label{sslstrip_time}
 \end{figure}
-\fxnote{avoid first person (you)}
-The diagram displayed in figure \ref{sslstrip} better explain all the temporal sequence of the attack.
-The user agent makes a request for a non-secure webpage, all the traffic is redirected into the attacker's virtual machine.
-Using iptables you redirect all the traffic from the port 80 to the port where sslstrip is running and, then,
-all the traffic is forwarded to the server. When the server response comes back,
-it passes again through the proxy and all the links in the webpage get downgraded from \texttt{https://} to \texttt{http://}.
-Finally, the forged webpage is returned to the user agent.
-To properly mount this attack, you have to follow same specific rules:
+\begin{enumerate}
+  \item The user agent makes a request for a non-secure webpage
+  \item All the traffic reach the attacker's virtual machine
+  \item Using iptables the attacker redirects all the HTTP traffic from the port 80 to the port where sslstrip is running
+  \item The HTTP traffic is forwarded to the server and the response are sent to sslstrip
+  \item Sslstrip downgrades each \texttt{https://} link into an \texttt{http://} one
+  \item The stripped webpage is returned to the user agent
+\end{enumerate}
+
+\noindent To properly mount this attack, the alumn have to follow this procedure:
 \begin{itemize}
-  \item Mount a man in the Middle attack
+  \item Mount a \ac{MitM} attack
   \item Setup sslstrip to manipulate the HTTP traffic using this command line tool: \texttt{sslstrip -l <port>}
-  \item Create a specific rule to redirect the traffic from the port 80 to the port that sslstrip is running, using iptables (mettere la riga di codice?)
+  \item Using iptables, create a specific rule to redirect the traffic from the port 80 to the port where sslstrip is running:\\
+  \texttt{sudo iptables -t nat -A PREROUTING -p tcp --destination-port 80 -j REDIRECT --to-port <sslstrip\_port>}
   \item Navigate to \texttt{www.homepage.it} and click to the URL within the page
   \item Intercept the traffic using Wireshark and analyze the behaviour of sslstrip
 \end{itemize}
-\paragraph{Countermeasures}
-In order to prevent this kind of attack, there is a web security policy to protect against protocol downgraded attacks, called \texttt{HTTP Strict Transport Security} (HSTS). Declaring the HSTS policy, the web server forces a browser to use HTTPS and never insecure HTTP protocol. The HSTS Policy is communicated by the server to the user agent via an HTTPS response header field named \textit{Strict-Transport-Security}.
+
+\subsubsection{Countermeasure}
+HTTP Strict Transport Security (HSTS) is a web security policy to protect against protocol downgraded attacks.
+Declaring the HSTS policy, the web server forces a browser to use HTTPS.
+This policy is communicated by the server to the user agent via an HTTPS response header field named \textit{Strict-Transport-Security}.
 \newpage
 \subsection{Exercise 3 - HSTS Bypassing}
 The HSTS policy is associated with a specific domain name and changing just by one letter the domain name, the browser will
-not apply the policy anymore. For instance, an ’l’ (uncapital L) could become an ’I’ (capital i). The following diagram better shows the behaviour of this technique:
-\begin{figure}[h]
-  \includegraphics[width=.9\textwidth]{../figures/hsts_bypass_time}
-  \caption{}
-\end{figure}
-\\
-the first part is very similar to the one presented in the previous exercise, where all the links in the webpage get downgraded from \texttt{https://} to \texttt{http://}, adding for instance a fourth 'w' in the domain name (it can be whatever you want, the choice of adding a fourth w is due to the fact that it is not very visible).\\
-When the user clicks on a link within the page the DNS queries must be manipulated as well, using the dns2proxy tool. The DNS request from the user passes through dns2proxy and is manipulated in order to be solved by the DNS server. Then, the response flows into dns2proxy again, which manipulate the response to redirect the user to a fake webpage and not to one the user was supposed to navigate.
+not apply the policy anymore. For instance, an ’l’ (uncapital L) could become an ’I’ (capital i).
+The diagram in figure \ref{hsts_bypass} better shows the behaviour of this technique:
+\begin{enumerate}
+  \item The user agent makes a request for a non-secure webpage
+  \item All the traffic reaches the attacker's virtual machine
+  \item Using iptables the attacker redirects all the HTTP traffic from the port 80 to the port where sslstrip is running
+  \item The HTTP traffic is forwarded to the server and the response are sent to sslstrip
+  \item Sslstrip downgrades each \texttt{https://} link into an \texttt{http://} one, moreover it modify the domain name to something similar
+  \item The stripped webpage is returned to the user agent
+  \item When the user agent requests the stripped link a DNS requests is made
+  \begin{figure}[h]
+    \center
+    \includegraphics[width=\textwidth]{../figures/hsts_bypass_time}
+    \caption{Diagram of the HSTS bypass attack}
+    \label{hsts_bypass}
+  \end{figure}
+  \item The DNS request passes through dns2proxy and it is manipulated in order to be solved by the DNS server
+  \item The legit response is received by dns2proxy, altered again and finally returned to the user
+  \item The user navigates to the webpage with a slightly different domain using HTTP protocol
+\end{enumerate}
 
-To correctly mount this attack, you have to follow this rules:
+\noindent To correctly mount this attack, you have to follow this procedure:
 \begin{itemize}
   \item Mount a MitM attack
-  \item Implement the missing code in \texttt{sslstrip/URLMonitor.py}
-  \item Create a specific rule to redirect the traffic from the port 80 to the port that sslstrip is running, using iptables (mettere la riga di codice?)
-  \item Implement the missing code in \texttt{dns2proxy.py}
-  \item Create a specific rule to redirect all the traffic in the attacker virtual machine changing the destination ip
+  \item Implement the missing code in \texttt{sslstrip/URLMonitor.py} and execute it \texttt{./sslstrip.py -l <sslstrip\_port>}
+  \item Create a specific rule to redirect the traffic from the port 80 to the port that sslstrip is running, using iptables\\
+  \texttt{sudo iptables -t nat -A PREROUTING -p tcp --destination-port 80 -j REDIRECT --to-port <sslstrip\_port>}
+  \item Implement the missing code in \texttt{dns2proxy.py} and execute it \texttt{./dns2proxy.py}
+  \item Create a specific rule to redirect all the traffic in the attacker virtual machine changing the destination ip.\\
+  \texttt{sudo iptables -t nat -A PREROUTING -p udp --dport 53 -i enp0s8 -j DNAT --to <attacker\_ip>}
   \item Analyze the behaviour using Wireshark, being sure that all this trick has being working properly
 \end{itemize}
-\fxnote{add the solutions}
-\paragraph{Countermeasures}
+
+
+\subsubsection{Countermeasures}
 Unfortunately, there is no default technique to prevent this type of attack. The user must always check the correctness of the URL in the address bar.
+
+\subsubsection{Solution of the exercise
+}
+\textbf{Missing code in \texttt{sslstrip/URLMonitor.py}}
+\lstset{language=Python}
+\begin{lstlisting}
+  if host[:4] == "www.":
+      fake_domain = "w" + host
+  else:
+      fake_domain = "web" + host
+
+\end{lstlisting}
+
+\noindent\textbf{Missing code in \texttt{dns2proxy.py}}
+\begin{lstlisting}
+  if host[:5] == 'wwww.':
+      real_domain = host[1:]
+  elif host[:3] == 'web':
+      real_domain = host[3:]
+
+\end{lstlisting}
 
 \end{document}

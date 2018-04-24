@@ -100,7 +100,7 @@ The diagram visible in figure \ref{arp_spoofing} shows the behaviour of the atta
 \paragraph{Countermeasures}
 Several countermeasures can be adopted to prevent an \ac{ARP} poisoning attack:
 \begin{itemize}
-  \item \textbf{\ac{ARP} poisoning proof switches}. These smart switches maintains an \ac{ARP} table and blocks illegitimate ARP responses.
+  \item \textbf{\ac{ARP} poisoning proof switches}. These smart switches maintain an \ac{ARP} table and blocks illegitimate ARP responses.
   \item \textbf{Port-Based Network Access Control (802.1x)}. This protocol provides a mechanism to authenticate devices which want to establish a connection to LAN or WLAN network through a switch or a Wi-Fi access point.
   \item \textbf{Encrypted VPN}. These VPNs authenticate both client and server with a public key mechanism and so the attacker cannot intercept nor alter the communication.
 \end{itemize}
@@ -125,9 +125,8 @@ The diagram in figure \ref{dhcp_poisoning} explains how the attack works.
 \paragraph{Countermeasures}
 Smart switches are one of the best solutions to avoid this kind of attack.
 They are based on a mechanism which sets a port as trusted or untrusted.
-As you can see by the following diagram, the router expects to receive DHCP responses only from the real DHCP server,
-so all the responses which does not come from the legit server are discarded.
-The diagram in figure \ref{dhcp_snooping} better clarifies the explained behaviour.
+As shown in the figure \ref{dhcp_snooping}, the router expects to receive DHCP responses only from the real DHCP server,
+so all the responses which do not come from the legit server are discarded.
 
 \begin{figure}
 \center
@@ -139,7 +138,7 @@ The diagram in figure \ref{dhcp_snooping} better clarifies the explained behavio
 \subsubsection{Evil Twin}
 \acrodef{SSID}{Service Set IDentifier}
 The 802.11\footnote{\url{https://tools.ietf.org/html/rfc7494}} protocol allows
-the creation of wireless network with multiple Access Points (Extended Service Set).
+the creation of a wireless network with multiple Access Points (Extended Service Set).
 This functionality is used in large environments where more than a single AP is needed.
 In order to allow devices to perform handover, multiple APs, sharing the same \ac{SSID}, are set up. \\
 An Evil Twin is a rouge AP added to an existing ESS to eavesdrop the communication.\\
@@ -180,7 +179,7 @@ For simplicity we chose to mount an ARP Spoofing attack using this simple comman
 \begin{lstlisting}
 arpspoof -t <victim_ip>  -r <router_ip>
 \end{lstlisting}
-After this, from the client virtual machine users have to navigate to a non-secure webpage (\url{http://www.homepage.it})
+After this, from the client virtual machine, users have to navigate to a non-secure webpage (\url{http://www.homepage.it})
 and, then, using Wireshark\footnote{\url{https://www.wireshark.org/}} sniff the HTTP traffic exchanged between the victim and the server.
 \subsubsection{Countermeasure}
 SSL/TLS is a cryptographic protocol aimed at preserving privacy and data integrity over a computer network between two communicating computer applications.
@@ -189,7 +188,7 @@ HTTPS is the secure extension of HTTP implementing SSL/TLS.
 \subsection{Exercise 2 - SSL Stripping}
 \fxnote{check the form}
 Roughly speaking, SSL Strip is a technique by which every occurrence of \texttt{https://} webpage gets replaced in \texttt{http://}.
-In this type of attack, all the traffic from the victim’s machine is routed into the attacker's one via a transparent proxy
+In this type of attack all the traffic from the victim’s machine is routed into the attacker's one via a transparent proxy
 (sslstrip\footnote{\url{https://moxie.org/software/sslstrip/}}) that is created by the attacker himself.\\
 The interesting thing is that the victim will not get any notification by the browser regarding SSL certificate errors.
 The figure \ref{sslstrip} shows that the client is supposed to directly communicate with the server,
@@ -209,9 +208,9 @@ The diagram displayed in figure \ref{sslstrip_time} better explains all the temp
 \end{figure}
 \begin{enumerate}
   \item The user agent makes a request for a non-secure webpage
-  \item All the traffic reach the attacker's virtual machine
+  \item All the traffic reaches the attacker's virtual machine
   \item Using iptables the attacker redirects all the HTTP traffic from the port 80 to the port where sslstrip is running
-  \item The HTTP traffic is forwarded to the server and the response are sent to sslstrip
+  \item The HTTP traffic is forwarded to the server and the response is sent to sslstrip
   \item Sslstrip downgrades each \texttt{https://} link into an \texttt{http://} one
   \item The stripped webpage is returned to the user agent
 \end{enumerate}
@@ -239,7 +238,7 @@ The diagram in figure \ref{hsts_bypass} better shows the behaviour of this techn
   \item The user agent makes a request for a non-secure webpage
   \item All the traffic reaches the attacker's virtual machine
   \item Using iptables the attacker redirects all the HTTP traffic from the port 80 to the port where sslstrip is running
-  \item The HTTP traffic is forwarded to the server and the response are sent to sslstrip
+  \item The HTTP traffic is forwarded to the server and the response is sent to sslstrip
   \item Sslstrip downgrades each \texttt{https://} link into an \texttt{http://} one, moreover it modify the domain name to something similar
   \item The stripped webpage is returned to the user agent
   \item When the user agent requests the stripped link a DNS requests is made
@@ -258,7 +257,7 @@ The diagram in figure \ref{hsts_bypass} better shows the behaviour of this techn
 \begin{itemize}
   \item Mount a MitM attack
   \item Implement the missing code in \texttt{sslstrip/URLMonitor.py} and execute it \texttt{./sslstrip.py -l <sslstrip\_port>}
-  \item Create a specific rule to redirect the traffic from the port 80 to the port that sslstrip is running, using iptables\\
+  \item Using iptables, create a specific rule to redirect the traffic from the port 80 to the port where sslstrip is running\\
   \texttt{sudo iptables -t nat -A PREROUTING -p tcp --destination-port 80 -j REDIRECT --to-port <sslstrip\_port>}
   \item Implement the missing code in \texttt{dns2proxy.py} and execute it \texttt{./dns2proxy.py}
   \item Create a specific rule to redirect all the traffic in the attacker virtual machine changing the destination ip.\\

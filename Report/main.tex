@@ -32,6 +32,10 @@ double/.style={short,text width=2cm}
 
 
 \include{titlepage}
+
+\tableofcontents
+\newpage
+
 \section{Introduction}
 \acrodef{MitM}{Man in the Middle}
 \paragraph{What are \ac{MitM} attacks}
@@ -189,7 +193,7 @@ HTTPS is the secure extension of HTTP implementing SSL/TLS.
 \fxnote{check the form}
 Roughly speaking, SSL Strip is a technique by which every occurrence of \texttt{https://} webpage gets replaced in \texttt{http://}.
 In this type of attack all the traffic from the victim’s machine is routed into the attacker's one via a transparent proxy
-(sslstrip\footnote{\url{https://moxie.org/software/sslstrip/}}) that is created by the attacker himself.\\
+(sslstrip\footnote{\url{https://moxie.org/software/sslstrip/}}) that is created by the attacker himself. \cite{elks2011man}\\
 The interesting thing is that the victim will not get any notification by the browser regarding SSL certificate errors.
 The figure \ref{sslstrip} shows that the client is supposed to directly communicate with the server,
 whereas all the traffic is forwarded to the attacker's machine and, then, to the server.
@@ -228,9 +232,10 @@ The diagram displayed in figure \ref{sslstrip_time} better explains all the temp
 \subsubsection{Countermeasure}
 HTTP Strict Transport Security (HSTS) is a web security policy to protect against protocol downgraded attacks.
 Declaring the HSTS policy, the web server forces a browser to use HTTPS.
-This policy is communicated by the server to the user agent via an HTTPS response header field named \textit{Strict-Transport-Security}.
+This policy is declared by web sites via the \textit{Strict-Transport-Security} HTTP response header field and/or by other means, such as user agent configuration, for example. \cite{hodges2012http}
 \newpage
 \subsection{Exercise 3 - HSTS Bypassing}
+Under certain circumstances, an attacker could exploit an inter-operation vulnerability in order to bypass HTTP Strict Transport Security protection using well-known attack techniques, such as SSLStrip. \cite{selvi2014bypassing}\\
 The HSTS policy is associated with a specific domain name and changing just by one letter the domain name, the browser will
 not apply the policy anymore. For instance, an ’l’ (uncapital L) could become an ’I’ (capital i).
 The diagram in figure \ref{hsts_bypass} better shows the behaviour of this technique:
@@ -291,7 +296,7 @@ Unfortunately, there is no default technique to prevent this type of attack. The
 \end{lstlisting}
 
 \FloatBarrier
-\bibliographystyle{plain}
+\bibliographystyle{unsrt}
 \bibliography{main.bib}
 
 \end{document}

@@ -100,8 +100,8 @@ The diagram visible in figure \ref{arp_spoofing} shows the behaviour of the atta
 \paragraph{Countermeasures}
 Several countermeasures can be adopted to prevent an \ac{ARP} poisoning attack:
 \begin{itemize}
-  \item \textbf{\ac{ARP} poisoning proof switches}. These smart switches maintains an \ac{ARP} table and blocks illegitimate ARP responses.
-  \item \textbf{Port-Based Network Access Control (802.1x)}. This protocol provides a mechanism to authenticate devices which want to establish a connection to LAN or WLAN network through a switch or a Wi-Fi access point.
+  \item \textbf{\ac{ARP} poisoning proof switches}. These smart switches uses Dynamic Arp Inspection (DAI) to detect illegitimate ARP responses. \cite{7345444}
+  \item \textbf{Port-Based Network Access Control (802.1x)}. This protocol provides a mechanism to authenticate devices which want to establish a connection to LAN or WLAN network through a switch or a Wi-Fi access point. \cite{Qinggui_Hu}
   \item \textbf{Encrypted VPN}. These VPNs authenticate both client and server with a public key mechanism and so the attacker cannot intercept nor alter the communication.
 \end{itemize}
 
@@ -290,5 +290,9 @@ Unfortunately, there is no default technique to prevent this type of attack. The
       real_domain = host[3:]
 
 \end{lstlisting}
+
+\FloatBarrier
+\bibliographystyle{plain}
+\bibliography{main.bib}
 
 \end{document}
